@@ -9,4 +9,4 @@ bin/console doctrine:migrations:migrate
 
 
 echo 'running php fpm'
-exec php-fpm -F
+exec php-fpm

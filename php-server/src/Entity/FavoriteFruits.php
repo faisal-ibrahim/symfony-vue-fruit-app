@@ -13,8 +13,8 @@ class FavoriteFruits
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToOne(targetEntity: Fruit::class, inversedBy: 'favoriteFruit')]
-    #[ORM\JoinColumn(name: 'fruit_id', referencedColumnName: 'id', nullable:false)]
+    #[ORM\ManyToOne(targetEntity: Fruit::class)]
+    #[ORM\JoinColumn(name: "fruit_id", referencedColumnName: "id", nullable: false)]
     private Fruit $fruit;
 
     #[ORM\Column]

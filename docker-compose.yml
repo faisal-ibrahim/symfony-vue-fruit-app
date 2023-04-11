@@ -37,6 +37,20 @@ services:
     entrypoint:
       - /var/www/docker-entrypoint.sh
 
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    restart: unless-stopped
+    ports:
+      - "8081:80"
+    volumes:
+      - .:/var/www
+      - ./nginx:/etc/nginx/conf.d/
+    networks:
+      - app_network
+    depends_on:
+      - php-server
+
 networks:
   app_network:
     driver: bridge

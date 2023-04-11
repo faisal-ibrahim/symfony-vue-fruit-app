@@ -6,7 +6,6 @@ use App\Repository\FruitRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: FruitRepository::class)]
-#[ORM\UniqueEntity('fruityvice_id')]
 #[ORM\Index(name: 'fruityvice_id_index', columns: ['fruityvice_id'])]
 #[ORM\Index(name: 'name_index', columns: ['name'])]
 #[ORM\Index(name: 'family_index', columns: ['family'])]
@@ -17,7 +16,7 @@ class Fruit
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column( unique: true)]
+    #[ORM\Column(unique: true)]
     private ?int $fruityvice_id = null;
 
     #[ORM\Column(length: 255)]
@@ -50,8 +49,8 @@ class Fruit
     #[ORM\Column]
     private ?float $nutrition_sum = null;
 
-    #[OneToOne(targetEntity: FavoriteFruits::class, mappedBy: 'fruit')]
-    private FavoriteFruits|null $favoriteFruit = null;
+    private $isFavorite;
+
 
     public function getId(): ?int
     {
@@ -190,8 +189,15 @@ class Fruit
         return $this;
     }
 
-    public function getFavoriteFruit(): FavoriteFruits
+    public function getIsFavorite(): ?bool
     {
-        return $this->favoriteFruit;
+        return $this->isFavorite;
+    }
+
+    public function setIsFavorite(bool $isFavorite): self
+    {
+        $this->isFavorite = $isFavorite;
+
+        return $this;
     }
 }

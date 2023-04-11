@@ -15,12 +15,16 @@ https://docs.docker.com/engine/install/
 
 This command will let you enter the PHP container
 
-	docker-exec -it fruit-app /bin/bash
+	docker-exec -it php-server /bin/bash
 
 Inside the container, type the following command to fetch fruits and insert them into the database.
 	
 	app:fetch-fruits
-## Access the frontend app
-The frontend app will be running at the following URL
+## Access the backend API
+#### The api will be running at the following URL
 
-http://localhost:8080
+http://localhost:8081
+
+#### Endpoints
+GET `/api/fruit/search` 
+params: [page, limit, name, family]
