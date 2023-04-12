@@ -71,14 +71,14 @@ class FruitService
              * Add filters to query builder
              */
             if (isset($filter['name']) && !empty($filter['name'])) {
-                $queryBuilder->andWhere('f.name > :name')
-                    ->setParameter('name', $filter['name']);
+                $queryBuilder->andWhere('LOWER(f.name) = :name')
+                    ->setParameter('name', trim(strtolower($filter['name'])));
             }
 
 
             if (isset($filter['family']) && !empty($filter['family'])) {
-                $queryBuilder->andWhere('f.family > :family')
-                    ->setParameter('family', $filter['family']);
+                $queryBuilder->andWhere('LOWER(f.family) = :family')
+                    ->setParameter('family', trim(strtolower($filter['family'])));
             }
 
             /**

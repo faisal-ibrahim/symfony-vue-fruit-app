@@ -4,20 +4,19 @@ namespace App\Controller;
 
 
 use App\Service\FruitService;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 
 #[Route('/api/fruit', name: 'fruit')]
-class FruitController extends AbstractController
+class FruitController extends AppController
 {
     public function __construct(
         private FruitService $fruitService
     ) {
     }
 
-    #[Route('/search', name: 'fruit_search')]
+    #[Route('/', methods: ['GET'], name: 'fruit_search')]
     public function search(Request $request): JsonResponse
     {
         $filter = [
@@ -30,14 +29,6 @@ class FruitController extends AbstractController
 
         $data = $this->fruitService->search($page, $limit, $filter);
 
-        $responseData = [
-            'status' => true,
-            'data' => $data
-        ];
-
-        return $this->json(
-            $responseData,
-            headers: ['Content-Type' => 'application/json;charset=UTF-8']
-        );
+        return $this->jsonResponse(data: $data);
     }
 }

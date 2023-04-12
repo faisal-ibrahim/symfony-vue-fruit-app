@@ -26,5 +26,9 @@ Inside the container, type the following command to fetch fruits and insert them
 http://localhost:8081
 
 #### Endpoints
-GET `/api/fruit/search` 
-params: [page, limit, name, family]
+|Method|Endpoint|Param|Comment|
+|--|--|--|--|
+|GET|`api/fruit`|page, limit, name, family| List of fruit, filterable via name and family|
+|GET|`api/favorite`||List of favorite fruits||
+|POST|`api/favorite/{id}`|fruit id as path param|Add fruit as favorite|
+|DELETE|`api/favorite/{id}`|fruit id as path param|Remove fruit from favorite|
