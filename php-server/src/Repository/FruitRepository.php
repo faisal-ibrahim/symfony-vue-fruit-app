@@ -42,9 +42,31 @@ class FruitRepository extends ServiceEntityRepository
     public function findOneByFruityviceId(int $id): ?Fruit
     {
         return $this->createQueryBuilder('f')
-           ->andWhere('f.fruityvice_id = :val')
-           ->setParameter('val', $id)
-           ->getQuery()
-           ->getOneOrNullResult();
+            ->andWhere('f.fruityvice_id = :val')
+            ->setParameter('val', $id)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    public function getFavoriteFruits($userId)
+    {
+        $fruits = [];
+        $results = $this
+            ->getEntityManager()
+            ->createQueryBuilder('f')
+            ->innerJoin(FavoriteFruits::class, 'ff', 'WITH', 'ff.fruit = f AND ff.user_id = :userId')
+            ->setParameter('userId', $userId)
+            ->getQuery()
+            ->getResult();
+
+        /**
+         * Populate isFavorite property
+         */
+        foreach ($results as $fruit) {
+            $fruit->setIsFavorite(true);
+            $fruits[] = $fruit;
+        }
+
+        return $fruits;
     }
 }

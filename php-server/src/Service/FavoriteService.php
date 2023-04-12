@@ -27,27 +27,11 @@ class FavoriteService
         $userId = 1;
 
         $fruits = [];
-
         try {
-            $results = $this->entityManager
-                ->createQueryBuilder()->select('f')
-                ->from(Fruit::class, 'f')
-                ->innerJoin(FavoriteFruits::class, 'ff', 'WITH', 'ff.fruit = f AND ff.user_id = :userId')
-                ->setParameter('userId', $userId)
-                ->getQuery()
-                ->getResult();
-
-            /**
-             * Populate isFavorite property
-             */
-            foreach ($results as $fruit) {
-                $fruit->setIsFavorite(true);
-                $fruits[] = $fruit;
-            }
+            $fruits = $this->fruitRepository->getFavoriteFruits($userId);
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
         }
-
         return $fruits;
     }
 
