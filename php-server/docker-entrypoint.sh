@@ -2,7 +2,7 @@
 set -e
 
 echo 'installing composer dependency'
-# composer install
+composer install
 
 echo 'running migration'
 bin/console doctrine:migrations:migrate

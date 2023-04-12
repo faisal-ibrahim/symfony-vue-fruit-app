@@ -8,18 +8,18 @@ https://docs.docker.com/engine/install/
 #### Go to the project directory
 	cd symfony-vue-fruit-app
 #### Build and run docker
-	docker-compose up --build d
+	docker-compose up --build -d
 #### Wait for the complete setup. You can check the status of whether all the containers are up and running via the following command
 	docker ps
 ## To fetch fruits run the following commands
 
 This command will let you enter the PHP container
 
-	docker-exec -it php-server /bin/bash
+	docker exec -it php-server /bin/bash
 
 Inside the container, type the following command to fetch fruits and insert them into the database.
 	
-	app:fetch-fruits
+	bin/console app:fetch-fruits
 ## Access the backend API
 #### The api will be running at the following URL
 
