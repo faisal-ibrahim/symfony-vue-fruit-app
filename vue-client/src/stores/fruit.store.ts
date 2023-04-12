@@ -18,10 +18,8 @@ export const useFruitStore = defineStore({
         },
 
         async search(name?: string, family?: string) {
-            const response = await httpWrapper.get(`${baseUrl}/fruit`, {
-                name,
-                family
-            });
+            const url = `${baseUrl}/fruit?name=${name}&family=${family}`;
+            const response = await httpWrapper.get(url);
             this.updateData(response.data);
             this.networkMessage = response.message;
         },
