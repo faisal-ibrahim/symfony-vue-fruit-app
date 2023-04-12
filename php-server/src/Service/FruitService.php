@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Dtos\FruitDto;
 use App\Entity\Fruit;
 use App\Repository\FruitRepository;
 use Exception;
@@ -15,29 +16,29 @@ class FruitService
     ) {
     }
 
-    public function createOrUpdate(array $data): bool
+    public function createOrUpdate(FruitDto $fruitDto): bool
     {
 
-        $fruit = $this->fruitRepository->findOneByFruityviceId($data['fruityvice_id']);
+        $fruit = $this->fruitRepository->findOneByFruityviceId($fruitDto->getFruityviceId());
 
         if ($fruit == null) {
             $fruit = new Fruit();
         }
 
-        $fruit->setName($data['name']);
-        $fruit->setFamily($data['family']);
-        $fruit->setGenus($data['genus']);
-        $fruit->setFruityviceId($data['fruityvice_id']);
-        $fruit->setFruitOrder($data['fruit_order']);
-        $fruit->setCalories($data['calories']);
-        $fruit->setFat($data['fat']);
-        $fruit->setSugar($data['sugar']);
-        $fruit->setCarbohydrates($data['carbohydrates']);
-        $fruit->setProtein($data['protein']);
+        $fruit->setName($fruitDto->getName());
+        $fruit->setFamily($fruitDto->getFamily());
+        $fruit->setGenus($fruitDto->getGenus());
+        $fruit->setFruityviceId($fruitDto->getFruityviceId());
+        $fruit->setFruitOrder($fruitDto->getFruitOrder());
+        $fruit->setCalories($fruitDto->getCalories());
+        $fruit->setFat($fruitDto->getFat());
+        $fruit->setSugar($fruitDto->getSugar());
+        $fruit->setCarbohydrates($fruitDto->getCarbohydrates());
+        $fruit->setProtein($fruitDto->getProtien());
 
-        $sum = $data['calories'] + $data['fat']
-            + $data['sugar'] + $data['carbohydrates']
-            + $data['protein'];
+        $sum = $fruitDto->getCalories() + $fruitDto->getFat()
+            + $fruitDto->getSugar() + $fruitDto->getCarbohydrates()
+            + $fruitDto->getProtien();
         $fruit->setNutritionSum($sum);
 
         try {

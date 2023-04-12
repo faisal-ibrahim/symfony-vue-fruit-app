@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Dtos\FruitDto;
 use App\Service\FruitService;
 use Exception;
 use Psr\Log\LoggerInterface;
@@ -35,19 +36,21 @@ class FetchFruits
 
                 //Insert each fruit into database
                 foreach ($fruitsArray as $fruit) {
-                    //Adjust response according  to database
-                    $fruit['fruityvice_id'] = $fruit['id'];
-                    unset($fruit['id']);
-
-                    $fruit['fruit_order'] = $fruit['order'];
-                    unset($fruit['order']);
-
-                    $nutritions = $fruit['nutritions'];
-                    $fruit = array_merge($fruit, $nutritions);
-                    unset($fruit['nutritions']);
+                    $fruitDto = new FruitDto(
+                        $fruit['name'],
+                        $fruit['family'],
+                        $fruit['genus'],
+                        $fruit['id'],
+                        $fruit['order'],
+                        $fruit['nutritions']['calories'],
+                        $fruit['nutritions']['fat'],
+                        $fruit['nutritions']['sugar'],
+                        $fruit['nutritions']['carbohydrates'],
+                        $fruit['nutritions']['protein'],
+                    );
 
                     //Save into database
-                    if ($this->fruitService->createOrUpdate($fruit)) {
+                    if ($this->fruitService->createOrUpdate($fruitDto)) {
                         $upsertCount++;
                     }
                 }

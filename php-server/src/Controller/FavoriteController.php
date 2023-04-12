@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Service\FavoriteService;
@@ -10,9 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 #[Route('/api/favorite', name: 'fruit')]
 class FavoriteController extends AppController
 {
-    public function __construct(
-        private FavoriteService $favoriteService
-    ) {
+    public function __construct(private FavoriteService $favoriteService) {
     }
 
     #[Route('/', methods: ['GET'], name: 'get_favorite_fruits')]
