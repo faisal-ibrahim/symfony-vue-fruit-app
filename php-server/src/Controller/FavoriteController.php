@@ -4,9 +4,7 @@ namespace App\Controller;
 
 use App\Service\FavoriteService;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 #[Route('/api/favorite', name: 'fruit')]
 class FavoriteController extends AppController

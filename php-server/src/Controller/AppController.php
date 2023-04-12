@@ -2,13 +2,12 @@
 
 namespace App\Controller;
 
-
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class AppController extends AbstractController
 {
-    public function jsonResponse($message = '', $data = []): JsonResponse
+    public function jsonResponse(string $message = '', mixed $data = []): JsonResponse
     {
         $responseData = [
             'message' => $message,

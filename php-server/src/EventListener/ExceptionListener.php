@@ -12,7 +12,7 @@ class ExceptionListener
     {
     }
 
-    public function onKernelException(ExceptionEvent $event)
+    public function onKernelException(ExceptionEvent $event): void
     {
         // Get the exception object from the event
         $exception = $event->getThrowable();

@@ -51,7 +51,7 @@ class FavoriteService
         return $fruits;
     }
 
-    public function add($fruitId): void
+    public function add(int $fruitId): void
     {
         $userId = 1;
 
@@ -98,7 +98,7 @@ class FavoriteService
         $this->entityManager->flush();
     }
 
-    public function remove($fruitId): void
+    public function remove(int $fruitId): void
     {
         $userId = 1;
 

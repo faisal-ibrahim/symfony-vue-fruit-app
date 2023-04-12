@@ -18,7 +18,7 @@ class FruitService
     ) {
     }
 
-    public function createOrUpdate($data): bool
+    public function createOrUpdate(array $data): bool
     {
 
         $fruit = $this->fruitRepository->findOneByFruityviceId($data['fruityvice_id']);
@@ -56,11 +56,10 @@ class FruitService
         return false;
     }
 
-    public function search($page, $limit, $filter = []): array
+    public function search(int|null $page, int|null $limit, array $filter = []): array
     {
         $fruits = [];
         try {
-
             $queryBuilder = $this->entityManager->createQueryBuilder();
 
             $queryBuilder->select('f')

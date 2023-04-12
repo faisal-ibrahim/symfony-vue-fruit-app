@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-
 use App\Service\FruitService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;

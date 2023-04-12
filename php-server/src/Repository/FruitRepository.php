@@ -39,28 +39,12 @@ class FruitRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Fruit[] Returns an array of Fruit objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('f')
-//            ->andWhere('f.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('f.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-   public function findOneByFruityviceId($id): ?Fruit
-   {
-       return $this->createQueryBuilder('f')
+    public function findOneByFruityviceId(int $id): ?Fruit
+    {
+        return $this->createQueryBuilder('f')
            ->andWhere('f.fruityvice_id = :val')
            ->setParameter('val', $id)
            ->getQuery()
-           ->getOneOrNullResult()
-       ;
-   }
+           ->getOneOrNullResult();
+    }
 }

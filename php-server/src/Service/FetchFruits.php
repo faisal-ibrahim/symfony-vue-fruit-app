@@ -9,7 +9,6 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class FetchFruits
 {
-
     public function __construct(
         private FruitService $fruitService,
         private HttpClientInterface $client,
@@ -32,13 +31,11 @@ class FetchFruits
 
             //If the request is successful
             if ($response->getStatusCode() == 200) {
-
                 $fruitsArray = $response->toArray();
                 $fetchCount = count($fruitsArray);
 
                 //Insert each fruit into database
                 foreach ($fruitsArray as $fruit) {
-
                     //Adjust response according  to database
                     $fruit['fruityvice_id'] = $fruit['id'];
                     unset($fruit['id']);
