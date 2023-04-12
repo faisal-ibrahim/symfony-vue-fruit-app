@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Fruit;
+use App\Entity\FavoriteFruits;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

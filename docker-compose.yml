@@ -43,7 +43,6 @@ services:
     restart: unless-stopped
     ports:
       - "8081:80"
-      - "8082:8082"
     volumes:
       - .:/var/www
       - ./nginx:/etc/nginx/conf.d/
@@ -59,6 +58,8 @@ services:
     working_dir: /usr/src/app
     expose:
       - 5173
+    ports:
+      - "5173:5173" 
     volumes:
       - ./vue-client:/usr/src/app
       - node_modules:/usr/src/app/node_modules
@@ -67,7 +68,6 @@ services:
     entrypoint:
       - /usr/src/app/docker-entrypoint.sh
     tty: true
-
 
 networks:
   app_network:

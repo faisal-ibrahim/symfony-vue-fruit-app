@@ -2,7 +2,6 @@
 
 namespace App\Service;
 
-use App\Entity\FavoriteFruits;
 use App\Entity\Fruit;
 use App\Repository\FruitRepository;
 use Exception;
