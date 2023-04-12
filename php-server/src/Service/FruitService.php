@@ -52,14 +52,17 @@ class FruitService
 
     public function search(int|null $page, int|null $limit, array $filter = []): array
     {
-        $fruits = [];
+        $fruitResult = [
+            'data' => [],
+            'totalResult' => 0
+        ];
         try {
             $userId = 1;
-            $fruits = $this->fruitRepository->search($userId, $page, $limit, $filter);
+            $fruitResult = $this->fruitRepository->search($userId, $page, $limit, $filter);
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
         }
 
-        return $fruits;
+        return $fruitResult;
     }
 }

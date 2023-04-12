@@ -18,17 +18,20 @@ class FavoriteService
     ) {
     }
 
-    public function get(): array
+    public function get(int|null $page, int|null $limit): array
     {
         $userId = 1;
 
-        $fruits = [];
+        $fruitResult = [
+            'data' => [],
+            'totalResult' => 0
+        ];
         try {
-            $fruits = $this->fruitRepository->getFavoriteFruits($userId);
+            $fruitResult = $this->fruitRepository->getFavoriteFruits($userId, $page, $limit);
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
         }
-        return $fruits;
+        return $fruitResult;
     }
 
     public function add(int $fruitId): void

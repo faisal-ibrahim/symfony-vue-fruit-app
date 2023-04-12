@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Service\FavoriteService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 #[Route('/api/favorite', name: 'fruit')]
 class FavoriteController extends AppController
@@ -15,9 +16,12 @@ class FavoriteController extends AppController
     }
 
     #[Route('/', methods: ['GET'], name: 'get_favorite_fruits')]
-    public function get(): JsonResponse
+    public function get(Request $request): JsonResponse
     {
-        $data = $this->favoriteService->get();
+        $page = $request->query->get('page');
+        $limit = $request->query->get('limit');
+
+        $data = $this->favoriteService->get($page, $limit);
 
         return $this->jsonResponse(data: $data);
     }

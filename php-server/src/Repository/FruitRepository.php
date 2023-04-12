@@ -47,19 +47,43 @@ class FruitRepository extends ServiceEntityRepository
         ]);
     }
 
-    public function getFavoriteFruits(int $userId): array
+    public function getFavoriteFruits(int $userId, int|null $page, int|null $limit): array
     {
+        $page = empty($page) ? 0 : $page;
+        $limit = empty($limit) ? 10 : $limit;
+        $firstResult = $page * $limit;
+
         $fruits = [];
-        $results = $this
+        $queryBuilder = $this
             ->getEntityManager()
-            ->createQueryBuilder()
-            ->select('f')
+            ->createQueryBuilder('f')
+            ->select('COUNT(f.id)')
             ->from(Fruit::class, 'f')
             ->innerJoin(FavoriteFruits::class, 'ff', 'WITH', 'ff.fruit = f AND ff.user_id = :userId')
-            ->setParameter('userId', $userId)
-            ->getQuery()
-            ->getResult();
+            ->setParameter('userId', $userId);
 
+        /**
+         * Get count of rows
+         */
+        $count = (int)($queryBuilder->getQuery()->getSingleScalarResult());
+
+        /**
+         * Add pagination
+         */
+        $page = empty($page) ? 0 : $page;
+        $limit = empty($limit) ? 10 : $limit;
+        $firstResult = $page * $limit;
+
+
+        $queryBuilder
+            ->select('f')
+            ->setFirstResult($firstResult)
+            ->setMaxResults($limit);
+
+        /**
+         * Get result
+         */
+        $results = $queryBuilder->getQuery()->getResult();
         /**
          * Populate isFavorite property
          */
@@ -68,7 +92,10 @@ class FruitRepository extends ServiceEntityRepository
             $fruits[] = $fruit;
         }
 
-        return $fruits;
+        return [
+            'data' => $fruits,
+            'totalResult' => $count
+        ];
     }
 
     public function findOneById(int $id): ?Fruit
@@ -89,10 +116,9 @@ class FruitRepository extends ServiceEntityRepository
 
         $queryBuilder = $this
             ->getEntityManager()
-            ->createQueryBuilder()
-            ->select('f')
+            ->createQueryBuilder('f')
+            ->select('COUNT(f.id)')
             ->from(Fruit::class, 'f');
-
 
         /**
          * Add filters to query builder
@@ -114,27 +140,33 @@ class FruitRepository extends ServiceEntityRepository
 
         $queryBuilder
             ->leftJoin(FavoriteFruits::class, 'ff', 'WITH', 'ff.fruit = f AND ff.user_id = :userId')
-            ->setParameter('userId', $userId)
-            ->addSelect('ff.id as favorite_fruit_id');
+            ->setParameter('userId', $userId);
+
+        /**
+         * Get count of rows
+         */
+        $count = (int)($queryBuilder->getQuery()->getSingleScalarResult());
 
         /**
          * Add pagination
          */
-        $page = empty($page) ? 0 : $page - 1;
-        $limit = empty($limit) ? 20 : $limit;
+        $page = empty($page) ? 0 : $page;
+        $limit = empty($limit) ? 10 : $limit;
         $firstResult = $page * $limit;
 
 
         $queryBuilder
+            ->select('f')
+            ->addSelect('ff.id as favorite_fruit_id')
             ->setFirstResult($firstResult)
             ->setMaxResults($limit);
-
 
         /**
          * Get result
          */
         $results = $queryBuilder->getQuery()->getResult();
 
+        //die(print_r($results));
 
         /**
          * Populate isFavorite property
@@ -146,6 +178,9 @@ class FruitRepository extends ServiceEntityRepository
             $fruits[] = $fruit;
         }
 
-        return $fruits;
+        return [
+            'data' => $fruits,
+            'totalResult' => $count
+        ];
     }
 }
