@@ -23,8 +23,8 @@ class FruitController extends AppController
             'name' => $request->query->get('name'),
         ];
 
-        $page = $request->query->get('page');
-        $limit = $request->query->get('limit');
+        $page = (int)$request->query->get('page');
+        $limit = (int)$request->query->get('limit');
 
         $data = $this->fruitService->search($page, $limit, $filter);
 

@@ -18,8 +18,8 @@ class FavoriteController extends AppController
     #[Route('/', methods: ['GET'], name: 'get_favorite_fruits')]
     public function get(Request $request): JsonResponse
     {
-        $page = $request->query->get('page');
-        $limit = $request->query->get('limit');
+        $page = (int)($request->query->get('page'));
+        $limit = (int)$request->query->get('limit');
 
         $data = $this->favoriteService->get($page, $limit);
 
