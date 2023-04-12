@@ -52,7 +52,9 @@ class FruitRepository extends ServiceEntityRepository
         $fruits = [];
         $results = $this
             ->getEntityManager()
-            ->createQueryBuilder('f')
+            ->createQueryBuilder()
+            ->select('f')
+            ->from(Fruit::class, 'f')
             ->innerJoin(FavoriteFruits::class, 'ff', 'WITH', 'ff.fruit = f AND ff.user_id = :userId')
             ->setParameter('userId', $userId)
             ->getQuery()
@@ -85,9 +87,10 @@ class FruitRepository extends ServiceEntityRepository
 
         $fruits = [];
 
-        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
-
-        $queryBuilder->select('f')
+        $queryBuilder = $this
+            ->getEntityManager()
+            ->createQueryBuilder()
+            ->select('f')
             ->from(Fruit::class, 'f');
 
 

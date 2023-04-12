@@ -84,6 +84,6 @@ class FavoriteService
             return;
         }
 
-        $this->favoriteFruitsRepository->remove($favoriteFruit);
+        $this->favoriteFruitsRepository->remove($favoriteFruit, true);
     }
 }
