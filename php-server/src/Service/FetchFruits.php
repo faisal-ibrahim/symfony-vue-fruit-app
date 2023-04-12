@@ -18,7 +18,6 @@ class FetchFruits
 
     public function fetch(): array
     {
-
         $fetchCount = 0;
         $upsertCount = 0;
 

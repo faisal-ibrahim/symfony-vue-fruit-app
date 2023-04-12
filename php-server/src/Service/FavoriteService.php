@@ -3,10 +3,8 @@
 namespace App\Service;
 
 use App\Entity\FavoriteFruits;
-use App\Entity\Fruit;
 use App\Repository\FavoriteFruitsRepository;
 use App\Repository\FruitRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
@@ -14,13 +12,11 @@ use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 class FavoriteService
 {
     public function __construct(
-        private EntityManagerInterface $entityManager,
         private FruitRepository $fruitRepository,
         private FavoriteFruitsRepository $favoriteFruitsRepository,
         private LoggerInterface $logger
     ) {
     }
-
 
     public function get(): array
     {
@@ -39,9 +35,7 @@ class FavoriteService
     {
         $userId = 1;
 
-        $fruit = $this->fruitRepository->findOneBy([
-            'id' => $fruitId
-        ]);
+        $fruit = $this->fruitRepository->findOneById($fruitId);
 
         if (!$fruit) {
             throw new BadRequestException(
@@ -49,9 +43,7 @@ class FavoriteService
             );
         }
 
-        $results = $this->favoriteFruitsRepository->findBy([
-            'user_id' => $userId
-        ]);
+        $results = $this->favoriteFruitsRepository->findByUserId($userId);
 
         if (count($results) >= 10) {
             throw new BadRequestException(
@@ -73,31 +65,25 @@ class FavoriteService
         }
 
         $favoriteFruit = new FavoriteFruits();
-
         $favoriteFruit->setUserId($userId);
         $favoriteFruit->setFruit($fruit);
 
-        $this->entityManager->persist($favoriteFruit);
-
-        $this->entityManager->flush();
+        $this->favoriteFruitsRepository->save($favoriteFruit, true);
     }
 
     public function remove(int $fruitId): void
     {
         $userId = 1;
 
-        $favoriteFruit = $this->favoriteFruitsRepository->findOneBy([
-            'fruit' => $fruitId,
-            'user_id' => $userId
-        ]);
+        $favoriteFruit = $this
+            ->favoriteFruitsRepository
+            ->findOneByUserIdFruitId($userId, $fruitId);
 
         if (!$favoriteFruit) {
             //Already removed or never added, no operation required.
             return;
         }
 
-        $this->entityManager->remove($favoriteFruit);
-
-        $this->entityManager->flush();
+        $this->favoriteFruitsRepository->remove($favoriteFruit);
     }
 }

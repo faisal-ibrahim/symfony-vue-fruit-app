@@ -25,12 +25,10 @@ class FavoriteController extends AppController
     #[Route('/{id}', name: 'add_favorite_fruits', methods: ['POST'])]
     public function add(int $id): JsonResponse
     {
-
         $this->favoriteService->add($id);
 
         return $this->jsonResponse(message: 'Successfully added as favorite');
     }
-
 
     #[Route('/{id}', name: 'delete_favorite_fruits', methods: ['DELETE'])]
     public function delete(int $id): JsonResponse

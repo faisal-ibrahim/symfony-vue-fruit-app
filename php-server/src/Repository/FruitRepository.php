@@ -41,14 +41,12 @@ class FruitRepository extends ServiceEntityRepository
 
     public function findOneByFruityviceId(int $id): ?Fruit
     {
-        return $this->createQueryBuilder('f')
-            ->andWhere('f.fruityvice_id = :val')
-            ->setParameter('val', $id)
-            ->getQuery()
-            ->getOneOrNullResult();
+        return $this->findOneBy([
+            'fruityvice_id' => $id
+        ]);
     }
 
-    public function getFavoriteFruits($userId)
+    public function getFavoriteFruits(int $userId): array
     {
         $fruits = [];
         $results = $this
@@ -64,6 +62,83 @@ class FruitRepository extends ServiceEntityRepository
          */
         foreach ($results as $fruit) {
             $fruit->setIsFavorite(true);
+            $fruits[] = $fruit;
+        }
+
+        return $fruits;
+    }
+
+    public function findOneById(int $id): ?Fruit
+    {
+        return $this->findOneBy([
+            'id' => $id
+        ]);
+    }
+
+    public function search(
+        int $userId,
+        int|null $page,
+        int|null $limit,
+        array $filter = []
+    ): array {
+
+        $fruits = [];
+
+        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
+
+        $queryBuilder->select('f')
+            ->from(Fruit::class, 'f');
+
+
+        /**
+         * Add filters to query builder
+         */
+        if (isset($filter['name']) && !empty($filter['name'])) {
+            $queryBuilder->andWhere('LOWER(f.name) = :name')
+                ->setParameter('name', trim(strtolower($filter['name'])));
+        }
+
+
+        if (isset($filter['family']) && !empty($filter['family'])) {
+            $queryBuilder->andWhere('LOWER(f.family) = :family')
+                ->setParameter('family', trim(strtolower($filter['family'])));
+        }
+
+        /**
+         * Add isFavorite calculation
+         */
+
+        $queryBuilder
+            ->leftJoin(FavoriteFruits::class, 'ff', 'WITH', 'ff.fruit = f AND ff.user_id = :userId')
+            ->setParameter('userId', $userId)
+            ->addSelect('ff.id as favorite_fruit_id');
+
+        /**
+         * Add pagination
+         */
+        $page = empty($page) ? 0 : $page - 1;
+        $limit = empty($limit) ? 20 : $limit;
+        $firstResult = $page * $limit;
+
+
+        $queryBuilder
+            ->setFirstResult($firstResult)
+            ->setMaxResults($limit);
+
+
+        /**
+         * Get result
+         */
+        $results = $queryBuilder->getQuery()->getResult();
+
+
+        /**
+         * Populate isFavorite property
+         */
+        foreach ($results as $result) {
+            $fruit = $result[0];
+            $favoriteFruitId = $result['favorite_fruit_id'];
+            $fruit->setIsFavorite($favoriteFruitId !== null);
             $fruits[] = $fruit;
         }
 

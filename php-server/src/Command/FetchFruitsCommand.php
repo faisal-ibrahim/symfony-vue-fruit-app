@@ -17,7 +17,6 @@ class FetchFruitsCommand extends Command
         parent::__construct();
     }
 
-
     protected function configure(): void
     {
         $this

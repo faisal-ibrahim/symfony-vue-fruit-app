@@ -38,4 +38,19 @@ class FavoriteFruitsRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    public function findByUserId(int $userId): array
+    {
+        return $this->findBy([
+            'user_id' => $userId
+        ]);
+    }
+
+    public function findOneByUserIdFruitId(int $userId, int $fruitId): ?FavoriteFruits
+    {
+        return $this->findOneBy([
+            'fruit' => $fruitId,
+            'user_id' => $userId
+        ]);
+    }
 }

@@ -5,14 +5,12 @@ namespace App\Service;
 use App\Entity\FavoriteFruits;
 use App\Entity\Fruit;
 use App\Repository\FruitRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Psr\Log\LoggerInterface;
 
 class FruitService
 {
     public function __construct(
-        private EntityManagerInterface $entityManager,
         private FruitRepository $fruitRepository,
         private LoggerInterface $logger
     ) {
@@ -43,11 +41,8 @@ class FruitService
             + $data['protein'];
         $fruit->setNutritionSum($sum);
 
-
-        $this->entityManager->persist($fruit);
-
         try {
-            $this->entityManager->flush();
+            $this->fruitRepository->save($fruit, true);
             return true;
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
@@ -60,65 +55,8 @@ class FruitService
     {
         $fruits = [];
         try {
-            $queryBuilder = $this->entityManager->createQueryBuilder();
-
-            $queryBuilder->select('f')
-                ->from(Fruit::class, 'f');
-
-
-            /**
-             * Add filters to query builder
-             */
-            if (isset($filter['name']) && !empty($filter['name'])) {
-                $queryBuilder->andWhere('LOWER(f.name) = :name')
-                    ->setParameter('name', trim(strtolower($filter['name'])));
-            }
-
-
-            if (isset($filter['family']) && !empty($filter['family'])) {
-                $queryBuilder->andWhere('LOWER(f.family) = :family')
-                    ->setParameter('family', trim(strtolower($filter['family'])));
-            }
-
-            /**
-             * Add isFavorite calculation
-             */
-
             $userId = 1;
-
-            $queryBuilder
-                ->leftJoin(FavoriteFruits::class, 'ff', 'WITH', 'ff.fruit = f AND ff.user_id = :userId')
-                ->setParameter('userId', $userId)
-                ->addSelect('ff.id as favorite_fruit_id');
-
-            /**
-             * Add pagination
-             */
-            $page = empty($page) ? 0 : $page - 1;
-            $limit = empty($limit) ? 20 : $limit;
-            $firstResult = $page * $limit;
-
-
-            $queryBuilder
-                ->setFirstResult($firstResult)
-                ->setMaxResults($limit);
-
-
-            /**
-             * Get result
-             */
-            $results = $queryBuilder->getQuery()->getResult();
-
-
-            /**
-             * Populate isFavorite property
-             */
-            foreach ($results as $result) {
-                $fruit = $result[0];
-                $favoriteFruitId = $result['favorite_fruit_id'];
-                $fruit->setIsFavorite($favoriteFruitId !== null);
-                $fruits[] = $fruit;
-            }
+            $fruits = $this->fruitRepository->search($userId, $page, $limit, $filter);
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
         }
