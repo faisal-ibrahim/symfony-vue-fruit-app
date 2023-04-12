@@ -32,3 +32,7 @@ http://localhost:8081
 |GET|`api/favorite`||List of favorite fruits||
 |POST|`api/favorite/{id}`|fruit id as path param|Add fruit as favorite|
 |DELETE|`api/favorite/{id}`|fruit id as path param|Remove fruit from favorite|
+
+## Access Frontend Application
+
+http://localhost:8082

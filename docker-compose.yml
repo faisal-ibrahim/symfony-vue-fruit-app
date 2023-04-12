@@ -43,6 +43,7 @@ services:
     restart: unless-stopped
     ports:
       - "8081:80"
+      - "8082:8082"
     volumes:
       - .:/var/www
       - ./nginx:/etc/nginx/conf.d/
@@ -51,10 +52,29 @@ services:
     depends_on:
       - php-server
 
+  vue-client:
+    image: node:18-bullseye
+    container_name: vue-client
+    restart: unless-stopped
+    working_dir: /usr/src/app
+    expose:
+      - 5173
+    volumes:
+      - ./vue-client:/usr/src/app
+      - node_modules:/usr/src/app/node_modules
+    networks:
+      - app_network
+    entrypoint:
+      - /usr/src/app/docker-entrypoint.sh
+    tty: true
+
+
 networks:
   app_network:
     driver: bridge
 
 volumes:
   mysql_data:
+    driver: local
+  node_modules:
     driver: local
