@@ -35,4 +35,4 @@ http://localhost:8081
 
 ## Access Frontend Application
 
-http://localhost:8082
+http://localhost:5173
