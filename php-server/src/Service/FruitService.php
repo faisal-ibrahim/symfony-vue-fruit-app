@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service;
 
 use App\Dtos\FruitDto;
@@ -11,17 +13,16 @@ use Psr\Log\LoggerInterface;
 class FruitService
 {
     public function __construct(
-        private FruitRepository $fruitRepository,
-        private LoggerInterface $logger
+        private readonly FruitRepository $fruitRepository,
+        private readonly LoggerInterface $logger
     ) {
     }
 
     public function createOrUpdate(FruitDto $fruitDto): bool
     {
-
         $fruit = $this->fruitRepository->findOneByFruityviceId($fruitDto->getFruityviceId());
 
-        if ($fruit == null) {
+        if ($fruit === null) {
             $fruit = new Fruit();
         }
 
@@ -43,6 +44,7 @@ class FruitService
 
         try {
             $this->fruitRepository->save($fruit, true);
+
             return true;
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());

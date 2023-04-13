@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service;
 
 use App\Dtos\FruitDto;
-use App\Service\FruitService;
 use Exception;
 use Psr\Log\LoggerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -11,10 +12,10 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class FetchFruits
 {
     public function __construct(
-        private FruitService $fruitService,
-        private HttpClientInterface $client,
-        private LoggerInterface $logger,
-        private MailerService $mailerService
+        private readonly FruitService        $fruitService,
+        private readonly HttpClientInterface $client,
+        private readonly LoggerInterface     $logger,
+        private readonly MailerService $mailerService
     ) {
     }
 

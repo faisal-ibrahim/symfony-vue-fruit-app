@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service;
 
 use App\Entity\FavoriteFruits;
@@ -12,10 +14,11 @@ use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 class FavoriteService
 {
     public function __construct(
-        private FruitRepository $fruitRepository,
-        private FavoriteFruitsRepository $favoriteFruitsRepository,
-        private LoggerInterface $logger
-    ) {
+        private readonly FruitRepository          $fruitRepository,
+        private readonly FavoriteFruitsRepository $favoriteFruitsRepository,
+        private readonly LoggerInterface          $logger
+    )
+    {
     }
 
     public function get(int|null $page, int|null $limit): array
