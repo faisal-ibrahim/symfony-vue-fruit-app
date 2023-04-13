@@ -46,7 +46,7 @@ final class FavoriteServiceTest extends TestCase
             ->with(1)
             ->willReturn(['apple', 'banana']);
 
-        $result = $this->favoriteService->get();
+        $result = $this->favoriteService->get(0,10);
 
         $this->assertIsArray($result);
         $this->assertCount(2, $result);
