@@ -7,7 +7,6 @@ use Symfony\Component\Mime\Email;
 
 class MailerService
 {
-
     public function __construct(
         private MailerInterface $mailer
     ) {

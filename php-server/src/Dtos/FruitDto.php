@@ -9,7 +9,7 @@ class FruitDto
     public function __construct(
         private string $name,
         private string $family,
-        private string$genus,
+        private string $genus,
         private int $fruityviceId,
         private string $fruitOrder,
         private float $calories,
@@ -18,7 +18,6 @@ class FruitDto
         private float $carbohydrates,
         private float $protien,
     ) {
-
     }
 
     public function getName(): string
@@ -70,5 +69,4 @@ class FruitDto
     {
         return $this->protien;
     }
-
 }
