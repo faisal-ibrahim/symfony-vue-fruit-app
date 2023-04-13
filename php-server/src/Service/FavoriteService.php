@@ -14,11 +14,10 @@ use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 class FavoriteService
 {
     public function __construct(
-        private readonly FruitRepository          $fruitRepository,
+        private readonly FruitRepository $fruitRepository,
         private readonly FavoriteFruitRepository $FavoriteFruitRepository,
-        private readonly LoggerInterface          $logger
-    )
-    {
+        private readonly LoggerInterface $logger
+    ) {
     }
 
     public function get(int|null $page, int|null $limit): array

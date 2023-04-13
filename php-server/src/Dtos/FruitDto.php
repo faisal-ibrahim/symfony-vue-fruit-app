@@ -10,13 +10,13 @@ class FruitDto
         private readonly string $name,
         private readonly string $family,
         private readonly string $genus,
-        private readonly int    $fruityviceId,
+        private readonly int $fruityviceId,
         private readonly string $fruitOrder,
-        private readonly float  $calories,
-        private readonly float  $fat,
-        private readonly float  $sugar,
-        private readonly float  $carbohydrates,
-        private readonly float  $protien,
+        private readonly float $calories,
+        private readonly float $fat,
+        private readonly float $sugar,
+        private readonly float $carbohydrates,
+        private readonly float $protien,
     ) {
     }
 

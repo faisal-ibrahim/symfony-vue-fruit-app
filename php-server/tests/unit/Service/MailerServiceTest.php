@@ -38,4 +38,3 @@ final class MailerServiceTest extends TestCase
         $this->mailerService->sendEmail($to, $subject, $text);
     }
 }
-

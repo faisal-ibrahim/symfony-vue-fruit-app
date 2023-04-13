@@ -12,9 +12,9 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class FetchFruits
 {
     public function __construct(
-        private readonly FruitService        $fruitService,
+        private readonly FruitService $fruitService,
         private readonly HttpClientInterface $client,
-        private readonly LoggerInterface     $logger,
+        private readonly LoggerInterface $logger,
         private readonly MailerService $mailerService
     ) {
     }
