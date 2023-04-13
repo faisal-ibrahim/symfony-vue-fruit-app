@@ -9,6 +9,24 @@ use App\Dtos\FruitDto;
 
 final class FruitDtoTest extends TestCase
 {
+    public function testCanCreateFruitDtoInstance(): void
+    {
+        $fruitDto = new FruitDto(
+            'Apple1',
+            'Rosaceae',
+            'Malus',
+            1234,
+            'Rosales',
+            52.0,
+            0.2,
+            10.4,
+            14.0,
+            0.3
+        );
+
+        $this->assertInstanceOf(FruitDto::class, $fruitDto);
+    }
+
     public function testGetters()
     {
         $fruitDto = new FruitDto(
