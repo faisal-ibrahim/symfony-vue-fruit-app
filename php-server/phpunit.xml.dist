@@ -20,6 +20,7 @@
         <!-- MAILER_DSN=null://null -->
         <!-- ###- symfony/mailer ### -->
         <env name="KERNEL_CLASS" value="App\Kernel" />
+        <env name="APP_ENV" value="test" />
     </php>
 
     <testsuites>
@@ -44,4 +45,7 @@
         <extension class="Symfony\Component\Panther\ServerExtension" />
     </extensions>
     -->
+    <extensions>
+        <extension class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension"/>
+    </extensions>
 </phpunit>

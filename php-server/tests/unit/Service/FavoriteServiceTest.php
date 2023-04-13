@@ -46,7 +46,7 @@ final class FavoriteServiceTest extends TestCase
             ->with(1)
             ->willReturn(['apple', 'banana']);
 
-        $result = $this->favoriteService->get(0,10);
+        $result = $this->favoriteService->get(0, 10);
 
         $this->assertIsArray($result);
         $this->assertCount(2, $result);
@@ -86,7 +86,9 @@ final class FavoriteServiceTest extends TestCase
             ->expects($this->once())
             ->method('findByUserId')
             ->with($userId)
-            ->willReturn(['fruit1', 'fruit2', 'fruit3', 'fruit4', 'fruit5', 'fruit6', 'fruit7', 'fruit8', 'fruit9', 'fruit10']);
+            ->willReturn([
+                'fruit1', 'fruit2', 'fruit3', 'fruit4', 'fruit5',
+                'fruit6', 'fruit7', 'fruit8', 'fruit9', 'fruit10']);
 
         $this->expectException(BadRequestException::class);
 

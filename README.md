@@ -36,3 +36,17 @@ http://localhost:8081
 ## Access Frontend Application
 
 http://localhost:5173
+
+## Test
+#### Database setup (only first time)
+
+	docker exec -it php-server /bin/bash
+	bin/console --env=test doctrine:database:create
+	bin/console --env=test doctrine:schema:create
+	bin/console --env=test doctrine:fixtures:load
+
+#### Running the test
+
+	docker exec -it php-server /bin/bash
+	./vendor/bin/phpunit
+
