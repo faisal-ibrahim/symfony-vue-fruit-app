@@ -19,30 +19,30 @@ export const useFruitStore = defineStore({
   }),
   actions: {
     async search(name?: string, family?: string, page?: number, limit?: number) {
-      const url = `${baseUrl}/fruit?name=${name}&family=${family}&page=${page}&limit=${limit}`
+      const url = `${baseUrl}/fruits?name=${name}&family=${family}&page=${page}&limit=${limit}`
       const response = await httpWrapper.get(url)
       this.updateData(response)
     },
 
     async getAll(page?: number, limit?: number) {
-      const url = `${baseUrl}/fruit?page=${page}&limit=${limit}`
+      const url = `${baseUrl}/fruits?page=${page}&limit=${limit}`
       const response = await httpWrapper.get(url)
       this.updateData(response)
     },
 
     async getFavorites(page?: number, limit?: number) {
-      const url = `${baseUrl}/favorite?page=${page}&limit=${limit}`
+      const url = `${baseUrl}/favorites?page=${page}&limit=${limit}`
       const response = await httpWrapper.get(url)
       this.updateData(response)
     },
 
     async addFavorite(fruitId: number) {
-      const response = await httpWrapper.post(`${baseUrl}/favorite/${fruitId}`)
+      const response = await httpWrapper.post(`${baseUrl}/favorites/${fruitId}`)
       this.networkMessage = response.message
     },
 
     async removeFavorite(fruitId: number) {
-      const response = await httpWrapper.delete(`${baseUrl}/favorite/${fruitId}`)
+      const response = await httpWrapper.delete(`${baseUrl}/favorites/${fruitId}`)
       this.networkMessage = response.message
     },
 
