@@ -7,16 +7,16 @@ namespace App\Dtos;
 class FruitDto
 {
     public function __construct(
-        private string $name,
-        private string $family,
-        private string $genus,
-        private int $fruityviceId,
-        private string $fruitOrder,
-        private float $calories,
-        private float $fat,
-        private float $sugar,
-        private float $carbohydrates,
-        private float $protien,
+        private readonly string $name,
+        private readonly string $family,
+        private readonly string $genus,
+        private readonly int    $fruityviceId,
+        private readonly string $fruitOrder,
+        private readonly float  $calories,
+        private readonly float  $fat,
+        private readonly float  $sugar,
+        private readonly float  $carbohydrates,
+        private readonly float  $protien,
     ) {
     }
 

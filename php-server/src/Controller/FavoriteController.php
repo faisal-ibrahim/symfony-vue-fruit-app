@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 #[Route('/api/favorites', name: 'fruit')]
 class FavoriteController extends AppController
 {
-    public function __construct(private FavoriteService $favoriteService)
+    public function __construct(private readonly FavoriteService $favoriteService)
     {
     }
 

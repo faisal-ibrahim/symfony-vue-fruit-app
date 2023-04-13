@@ -12,9 +12,8 @@ use Symfony\Component\HttpFoundation\Request;
 #[Route('/api/fruits', name: 'fruit')]
 class FruitController extends AppController
 {
-    public function __construct(
-        private FruitService $fruitService
-    ) {
+    public function __construct(private readonly FruitService $fruitService)
+    {
     }
 
     #[Route('/', methods: ['GET'], name: 'fruit_search')]

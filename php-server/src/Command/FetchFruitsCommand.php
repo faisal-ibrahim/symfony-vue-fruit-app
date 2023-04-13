@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Command;
 
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -12,7 +14,7 @@ use App\Service\FetchFruits;
 #[AsCommand(name: 'app:fetch-fruits')]
 class FetchFruitsCommand extends Command
 {
-    public function __construct(private FetchFruits $fetchFruits)
+    public function __construct(private readonly FetchFruits $fetchFruits)
     {
         parent::__construct();
     }
@@ -30,6 +32,7 @@ class FetchFruitsCommand extends Command
         $result = $this->fetchFruits->fetch();
         $output->write("Fetched = " . $result['fetchCount'] . PHP_EOL);
         $output->write("Inserted/Updated = " . $result['upsertCount'] . PHP_EOL);
+
         return Command::SUCCESS;
     }
 }
