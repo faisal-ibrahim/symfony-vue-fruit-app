@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Repository\FavoriteFruitsRepository;
+use App\Repository\FavoriteFruitRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: FavoriteFruitsRepository::class)]
-class FavoriteFruits
+#[ORM\Entity(repositoryClass: FavoriteFruitRepository::class)]
+class FavoriteFruit
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Tests\unit\Service;
 
-use App\Entity\FavoriteFruits;
+use App\Entity\FavoriteFruit;
 use App\Entity\Fruit;
-use App\Repository\FavoriteFruitsRepository;
+use App\Repository\FavoriteFruitRepository;
 use App\Repository\FruitRepository;
 use App\Service\FavoriteService;
 use PHPUnit\Framework\TestCase;
@@ -19,7 +19,7 @@ final class FavoriteServiceTest extends TestCase
 
     private FruitRepository $fruitRepository;
 
-    private FavoriteFruitsRepository $favoriteFruitsRepository;
+    private FavoriteFruitRepository $FavoriteFruitRepository;
 
     private LoggerInterface $logger;
 
@@ -28,12 +28,12 @@ final class FavoriteServiceTest extends TestCase
         parent::setUp();
 
         $this->fruitRepository = $this->createMock(FruitRepository::class);
-        $this->favoriteFruitsRepository = $this->createMock(FavoriteFruitsRepository::class);
+        $this->FavoriteFruitRepository = $this->createMock(FavoriteFruitRepository::class);
         $this->logger = $this->createMock(LoggerInterface::class);
 
         $this->favoriteService = new FavoriteService(
             $this->fruitRepository,
-            $this->favoriteFruitsRepository,
+            $this->FavoriteFruitRepository,
             $this->logger
         );
     }
@@ -42,7 +42,7 @@ final class FavoriteServiceTest extends TestCase
     {
         $this->fruitRepository
             ->expects($this->once())
-            ->method('getFavoriteFruits')
+            ->method('getFavoriteFruit')
             ->with(1)
             ->willReturn(['apple', 'banana']);
 
@@ -69,7 +69,7 @@ final class FavoriteServiceTest extends TestCase
         $this->favoriteService->add($fruitId);
     }
 
-    public function testAddThrowsBadRequestExceptionWhenMaxFavoriteFruitsReached(): void
+    public function testAddThrowsBadRequestExceptionWhenMaxFavoriteFruitReached(): void
     {
         $fruitId = 1;
         $userId = 1;
@@ -82,7 +82,7 @@ final class FavoriteServiceTest extends TestCase
             ->with($fruitId)
             ->willReturn($fruit);
 
-        $this->favoriteFruitsRepository
+        $this->FavoriteFruitRepository
             ->expects($this->once())
             ->method('findByUserId')
             ->with($userId)
@@ -102,7 +102,7 @@ final class FavoriteServiceTest extends TestCase
 
         $fruit = new Fruit();
 
-        $favoriteFruit = new FavoriteFruits();
+        $favoriteFruit = new FavoriteFruit();
         $favoriteFruit->setUserId($userId);
         $favoriteFruit->setFruit($fruit);
 
@@ -112,7 +112,7 @@ final class FavoriteServiceTest extends TestCase
             ->with($fruitId)
             ->willReturn($fruit);
 
-        $this->favoriteFruitsRepository
+        $this->FavoriteFruitRepository
             ->expects($this->once())
             ->method('findByUserId')
             ->with($userId)
@@ -120,7 +120,7 @@ final class FavoriteServiceTest extends TestCase
 
         $this->favoriteService->add($fruitId);
 
-        $this->favoriteFruitsRepository
+        $this->FavoriteFruitRepository
             ->expects($this->never())
             ->method('save');
     }
@@ -138,17 +138,17 @@ final class FavoriteServiceTest extends TestCase
             ->with($fruitId)
             ->willReturn($fruit);
 
-        $this->favoriteFruitsRepository
+        $this->FavoriteFruitRepository
             ->expects($this->once())
             ->method('findByUserId')
             ->with($userId)
             ->willReturn([]);
 
-        $this->favoriteFruitsRepository
+        $this->FavoriteFruitRepository
             ->expects($this->once())
             ->method('save')
             ->with($this->callback(function ($favoriteFruit) use ($userId, $fruit) {
-                return $favoriteFruit instanceof FavoriteFruits
+                return $favoriteFruit instanceof FavoriteFruit
                     && $favoriteFruit->getUserId() === $userId
                     && $favoriteFruit->getFruit() === $fruit;
             }), true);
@@ -161,15 +161,15 @@ final class FavoriteServiceTest extends TestCase
         $fruitId = 1;
         $userId = 1;
 
-        $favoriteFruit = $this->createMock(FavoriteFruits::class);
+        $favoriteFruit = $this->createMock(FavoriteFruit::class);
 
-        $this->favoriteFruitsRepository
+        $this->FavoriteFruitRepository
             ->expects($this->once())
             ->method('findOneByUserIdFruitId')
             ->with($userId, $fruitId)
             ->willReturn($favoriteFruit);
 
-        $this->favoriteFruitsRepository
+        $this->FavoriteFruitRepository
             ->expects($this->once())
             ->method('remove')
             ->with($favoriteFruit);
@@ -182,15 +182,15 @@ final class FavoriteServiceTest extends TestCase
         $fruitId = 123;
         $userId = 1;
 
-        $favoriteFruit = $this->createMock(FavoriteFruits::class);
+        $favoriteFruit = $this->createMock(FavoriteFruit::class);
 
-        $this->favoriteFruitsRepository
+        $this->FavoriteFruitRepository
             ->expects($this->once())
             ->method('findOneByUserIdFruitId')
             ->with($userId, $fruitId)
             ->willReturn($favoriteFruit);
 
-        $this->favoriteFruitsRepository
+        $this->FavoriteFruitRepository
             ->expects($this->once())
             ->method('remove')
             ->with($favoriteFruit);
@@ -203,13 +203,13 @@ final class FavoriteServiceTest extends TestCase
         $fruitId = 123;
         $userId = 1;
 
-        $this->favoriteFruitsRepository
+        $this->FavoriteFruitRepository
             ->expects($this->once())
             ->method('findOneByUserIdFruitId')
             ->with($userId, $fruitId)
             ->willReturn(null);
 
-        $this->favoriteFruitsRepository
+        $this->FavoriteFruitRepository
             ->expects($this->never())
             ->method('remove');
 

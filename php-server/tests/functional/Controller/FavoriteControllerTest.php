@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class FavoriteControllerTest extends WebTestCase
 {
-    public function testGetFavoriteFruits(): void
+    public function testGetFavoriteFruit(): void
     {
         $client = static::createClient();
         $client->request('GET', '/api/favorites/');
@@ -17,7 +17,7 @@ final class FavoriteControllerTest extends WebTestCase
         $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
     }
 
-    public function testAddFavoriteFruits(): void
+    public function testAddFavoriteFruit(): void
     {
         $client = static::createClient();
         $client->request('POST', '/api/favorites/1');
@@ -27,7 +27,7 @@ final class FavoriteControllerTest extends WebTestCase
         $this->assertStringContainsString('Successfully added as favorite', $client->getResponse()->getContent());
     }
 
-    public function testDeleteFavoriteFruits(): void
+    public function testDeleteFavoriteFruit(): void
     {
         $client = static::createClient();
         $client->request('DELETE', '/api/favorites/1');

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Entity\FavoriteFruits;
-use App\Repository\FavoriteFruitsRepository;
+use App\Entity\FavoriteFruit;
+use App\Repository\FavoriteFruitRepository;
 use App\Repository\FruitRepository;
 use Exception;
 use Psr\Log\LoggerInterface;
@@ -15,7 +15,7 @@ class FavoriteService
 {
     public function __construct(
         private readonly FruitRepository          $fruitRepository,
-        private readonly FavoriteFruitsRepository $favoriteFruitsRepository,
+        private readonly FavoriteFruitRepository $FavoriteFruitRepository,
         private readonly LoggerInterface          $logger
     )
     {
@@ -30,7 +30,7 @@ class FavoriteService
             'totalResult' => 0
         ];
         try {
-            $fruitResult = $this->fruitRepository->getFavoriteFruits($userId, $page, $limit);
+            $fruitResult = $this->fruitRepository->getFavoriteFruit($userId, $page, $limit);
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
         }
@@ -49,7 +49,7 @@ class FavoriteService
             );
         }
 
-        $results = $this->favoriteFruitsRepository->findByUserId($userId);
+        $results = $this->FavoriteFruitRepository->findByUserId($userId);
 
         if (count($results) >= 10) {
             throw new BadRequestException(
@@ -70,11 +70,11 @@ class FavoriteService
             return;
         }
 
-        $favoriteFruit = new FavoriteFruits();
+        $favoriteFruit = new FavoriteFruit();
         $favoriteFruit->setUserId($userId);
         $favoriteFruit->setFruit($fruit);
 
-        $this->favoriteFruitsRepository->save($favoriteFruit, true);
+        $this->FavoriteFruitRepository->save($favoriteFruit, true);
     }
 
     public function remove(int $fruitId): void
@@ -82,7 +82,7 @@ class FavoriteService
         $userId = 1;
 
         $favoriteFruit = $this
-            ->favoriteFruitsRepository
+            ->FavoriteFruitRepository
             ->findOneByUserIdFruitId($userId, $fruitId);
 
         if (!$favoriteFruit) {
@@ -90,6 +90,6 @@ class FavoriteService
             return;
         }
 
-        $this->favoriteFruitsRepository->remove($favoriteFruit, true);
+        $this->FavoriteFruitRepository->remove($favoriteFruit, true);
     }
 }

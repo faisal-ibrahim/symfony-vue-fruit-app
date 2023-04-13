@@ -2,26 +2,26 @@
 
 namespace App\Repository;
 
-use App\Entity\FavoriteFruits;
+use App\Entity\FavoriteFruit;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<FavoriteFruits>
+ * @extends ServiceEntityRepository<FavoriteFruit>
  *
- * @method FavoriteFruits|null find($id, $lockMode = null, $lockVersion = null)
- * @method FavoriteFruits|null findOneBy(array $criteria, array $orderBy = null)
- * @method FavoriteFruits[]    findAll()
- * @method FavoriteFruits[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method FavoriteFruit|null find($id, $lockMode = null, $lockVersion = null)
+ * @method FavoriteFruit|null findOneBy(array $criteria, array $orderBy = null)
+ * @method FavoriteFruit[]    findAll()
+ * @method FavoriteFruit[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class FavoriteFruitsRepository extends ServiceEntityRepository
+class FavoriteFruitRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, FavoriteFruits::class);
+        parent::__construct($registry, FavoriteFruit::class);
     }
 
-    public function save(FavoriteFruits $entity, bool $flush = false): void
+    public function save(FavoriteFruit $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -30,7 +30,7 @@ class FavoriteFruitsRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(FavoriteFruits $entity, bool $flush = false): void
+    public function remove(FavoriteFruit $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
 
@@ -46,7 +46,7 @@ class FavoriteFruitsRepository extends ServiceEntityRepository
         ]);
     }
 
-    public function findOneByUserIdFruitId(int $userId, int $fruitId): ?FavoriteFruits
+    public function findOneByUserIdFruitId(int $userId, int $fruitId): ?FavoriteFruit
     {
         return $this->findOneBy([
             'fruit' => $fruitId,

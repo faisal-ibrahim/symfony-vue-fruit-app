@@ -3,7 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Fruit;
-use App\Entity\FavoriteFruits;
+use App\Entity\FavoriteFruit;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -47,7 +47,7 @@ class FruitRepository extends ServiceEntityRepository
         ]);
     }
 
-    public function getFavoriteFruits(int $userId, int|null $page, int|null $limit): array
+    public function getFavoriteFruit(int $userId, int|null $page, int|null $limit): array
     {
         $page = empty($page) ? 0 : $page;
         $limit = empty($limit) ? 10 : $limit;
@@ -59,7 +59,7 @@ class FruitRepository extends ServiceEntityRepository
             ->createQueryBuilder('f')
             ->select('COUNT(f.id)')
             ->from(Fruit::class, 'f')
-            ->innerJoin(FavoriteFruits::class, 'ff', 'WITH', 'ff.fruit = f AND ff.user_id = :userId')
+            ->innerJoin(FavoriteFruit::class, 'ff', 'WITH', 'ff.fruit = f AND ff.user_id = :userId')
             ->setParameter('userId', $userId);
 
         /**
@@ -139,7 +139,7 @@ class FruitRepository extends ServiceEntityRepository
          */
 
         $queryBuilder
-            ->leftJoin(FavoriteFruits::class, 'ff', 'WITH', 'ff.fruit = f AND ff.user_id = :userId')
+            ->leftJoin(FavoriteFruit::class, 'ff', 'WITH', 'ff.fruit = f AND ff.user_id = :userId')
             ->setParameter('userId', $userId);
 
         /**
