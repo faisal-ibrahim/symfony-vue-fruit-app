@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\functional\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Response;
 
 final class FavoriteControllerTest extends WebTestCase
 {
@@ -13,7 +14,7 @@ final class FavoriteControllerTest extends WebTestCase
         $client = static::createClient();
         $client->request('GET', '/api/favorites/');
 
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
     }
 
     public function testAddFavoriteFruits(): void
@@ -21,7 +22,9 @@ final class FavoriteControllerTest extends WebTestCase
         $client = static::createClient();
         $client->request('POST', '/api/favorites/1');
 
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+
+        $this->assertStringContainsString('Successfully added as favorite', $client->getResponse()->getContent());
     }
 
     public function testDeleteFavoriteFruits(): void
@@ -29,6 +32,8 @@ final class FavoriteControllerTest extends WebTestCase
         $client = static::createClient();
         $client->request('DELETE', '/api/favorites/1');
 
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+
+        $this->assertStringContainsString('Successfully removed from favorite', $client->getResponse()->getContent());
     }
 }

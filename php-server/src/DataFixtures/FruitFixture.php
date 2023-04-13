@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\DataFixtures;
 
 use App\Entity\Fruit;
@@ -10,7 +12,6 @@ class FruitFixture extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-
         for ($i = 0; $i < 15; $i++) {
             $fruit = new Fruit();
 
