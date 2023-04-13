@@ -13,7 +13,8 @@ class FetchFruits
     public function __construct(
         private FruitService $fruitService,
         private HttpClientInterface $client,
-        private LoggerInterface $logger
+        private LoggerInterface $logger,
+        private MailerService $mailerService
     ) {
     }
 
@@ -54,6 +55,12 @@ class FetchFruits
                         $upsertCount++;
                     }
                 }
+
+                $this->mailerService->sendEmail(
+                    to:"user@email.com",
+                    subject:"Fetching fruits",
+                    text:"Dear User,\n\nThe operation of fetching fruit has been completed."
+                );
             } else {
                 $this->logger->error('Error on fetching fruits');
             }
