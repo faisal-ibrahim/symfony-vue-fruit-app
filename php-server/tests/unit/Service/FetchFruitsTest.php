@@ -86,8 +86,10 @@ final class FetchFruitsTest extends TestCase
             ->method('sendEmail')
             ->with(
                 $this->equalTo('user@email.com'),
-                $this->equalTo('Fetching fruits'),
-                $this->equalTo("Dear User,\n\nThe operation of fetching fruit has been completed.")
+                $this->equalTo('Fruit fetching completed!'),
+                $this->equalTo("Dear user,\n\nYour operation of fetching fruits from the 'fruityvice.com' " .
+                "has been completed. Total 1 fruits has been fetched and total 1 has been inserted/updated " .
+                "into the application database.")
             );
 
         $fetchFruits = new FetchFruits(

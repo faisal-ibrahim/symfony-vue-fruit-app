@@ -58,9 +58,11 @@ class FetchFruits
                 }
 
                 $this->mailerService->sendEmail(
-                    to:"user@email.com",
-                    subject:"Fetching fruits",
-                    text:"Dear User,\n\nThe operation of fetching fruit has been completed."
+                    to: "user@email.com",
+                    subject: "Fruit fetching completed!",
+                    text: "Dear user,\n\nYour operation of fetching fruits from the 'fruityvice.com' " .
+                    "has been completed. Total $fetchCount fruits has been fetched and total $upsertCount has " .
+                    "been inserted/updated into the application database."
                 );
             } else {
                 $this->logger->error('Error on fetching fruits');

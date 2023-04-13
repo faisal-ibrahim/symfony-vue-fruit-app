@@ -15,7 +15,7 @@ class FavoriteService
 {
     public function __construct(
         private readonly FruitRepository $fruitRepository,
-        private readonly FavoriteFruitRepository $FavoriteFruitRepository,
+        private readonly FavoriteFruitRepository $favoriteFruitRepository,
         private readonly LoggerInterface $logger
     ) {
     }
@@ -36,7 +36,7 @@ class FavoriteService
         return $fruitResult;
     }
 
-    public function add(int $fruitId): void
+    public function add(int $fruitId): string
     {
         $userId = 1;
 
@@ -44,15 +44,15 @@ class FavoriteService
 
         if (!$fruit) {
             throw new BadRequestException(
-                'Fruit not found, invalid fruit id.',
+                'Requested fruit is not found. Unable to add as favorite.',
             );
         }
 
-        $results = $this->FavoriteFruitRepository->findByUserId($userId);
+        $results = $this->favoriteFruitRepository->findByUserId($userId);
 
         if (count($results) >= 10) {
             throw new BadRequestException(
-                'Maximum number of favorite fruit reached.',
+                'Maximum limit reached. You can only add upto10 fruits as your favorite.',
             );
         }
 
@@ -64,31 +64,30 @@ class FavoriteService
             }
         }
 
-        if ($exist) {
-            //Already added, no operation required.
-            return;
+        if (!$exist) {
+            $favoriteFruit = new FavoriteFruit();
+            $favoriteFruit->setUserId($userId);
+            $favoriteFruit->setFruit($fruit);
+
+            $this->favoriteFruitRepository->save($favoriteFruit, true);
         }
 
-        $favoriteFruit = new FavoriteFruit();
-        $favoriteFruit->setUserId($userId);
-        $favoriteFruit->setFruit($fruit);
-
-        $this->FavoriteFruitRepository->save($favoriteFruit, true);
+        return $fruit->getName();
     }
 
-    public function remove(int $fruitId): void
+    public function remove(int $fruitId): string
     {
         $userId = 1;
 
         $favoriteFruit = $this
-            ->FavoriteFruitRepository
+            ->favoriteFruitRepository
             ->findOneByUserIdFruitId($userId, $fruitId);
 
-        if (!$favoriteFruit) {
-            //Already removed or never added, no operation required.
-            return;
+        if ($favoriteFruit) {
+            $this->favoriteFruitRepository->remove($favoriteFruit, true);
         }
 
-        $this->FavoriteFruitRepository->remove($favoriteFruit, true);
+        $fruit = $this->fruitRepository->findOneById($fruitId);
+        return empty($fruit) ? "" : $fruit->getName();
     }
 }

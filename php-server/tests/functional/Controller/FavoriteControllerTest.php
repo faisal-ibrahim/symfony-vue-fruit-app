@@ -24,7 +24,10 @@ final class FavoriteControllerTest extends WebTestCase
 
         $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
 
-        $this->assertStringContainsString('Successfully added as favorite', $client->getResponse()->getContent());
+        $this->assertStringContainsString(
+            'Fruit-0 is successfully added as your favorite fruit.',
+            $client->getResponse()->getContent()
+        );
     }
 
     public function testDeleteFavoriteFruit(): void
@@ -34,6 +37,9 @@ final class FavoriteControllerTest extends WebTestCase
 
         $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
 
-        $this->assertStringContainsString('Successfully removed from favorite', $client->getResponse()->getContent());
+        $this->assertStringContainsString(
+            'Fruit-0 has been removed from your favorite fruit list.',
+            $client->getResponse()->getContent()
+        );
     }
 }
