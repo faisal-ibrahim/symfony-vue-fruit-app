@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 
-#[Route('/api/fruit', name: 'fruit')]
+#[Route('/api/fruits', name: 'fruit')]
 class FruitController extends AppController
 {
     public function __construct(

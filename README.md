@@ -28,10 +28,10 @@ http://localhost:8081
 #### Endpoints
 |Method|Endpoint|Param|Comment|
 |--|--|--|--|
-|GET|`api/fruit`|page, limit, name, family| List of fruit, filterable via name and family|
-|GET|`api/favorite`||List of favorite fruits||
-|POST|`api/favorite/{id}`|fruit id as path param|Add fruit as favorite|
-|DELETE|`api/favorite/{id}`|fruit id as path param|Remove fruit from favorite|
+|GET|`api/fruits`|page, limit, name, family| List of fruit, filterable via name and family|
+|GET|`api/favorites`||List of favorite fruits||
+|POST|`api/favorites/{id}`|fruit id as path param|Add fruit as favorite|
+|DELETE|`api/favorites/{id}`|fruit id as path param|Remove fruit from favorite|
 
 ## Access Frontend Application
 

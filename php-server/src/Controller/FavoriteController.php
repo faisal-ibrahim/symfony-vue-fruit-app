@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 
-#[Route('/api/favorite', name: 'fruit')]
+#[Route('/api/favorites', name: 'fruit')]
 class FavoriteController extends AppController
 {
     public function __construct(private FavoriteService $favoriteService) {
