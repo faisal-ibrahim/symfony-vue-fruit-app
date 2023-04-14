@@ -24,12 +24,6 @@ export const useFruitStore = defineStore({
       this.updateData(response)
     },
 
-    async getAll(page?: number, limit?: number) {
-      const url = `${baseUrl}/fruits?page=${page}&limit=${limit}`
-      const response = await httpWrapper.get(url)
-      this.updateData(response)
-    },
-
     async getFavorites(page?: number, limit?: number) {
       const url = `${baseUrl}/favorites?page=${page}&limit=${limit}`
       const response = await httpWrapper.get(url)

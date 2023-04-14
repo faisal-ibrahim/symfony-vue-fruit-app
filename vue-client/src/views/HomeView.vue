@@ -1,16 +1,16 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { useFruitStore } from '../stores/fruit.store'
 import { ref, onMounted } from 'vue'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import InputText from 'primevue/inputtext'
 import Button from 'primevue/button'
-import { toast } from 'vue3-toastify'
-import 'vue3-toastify/dist/index.css'
+import { useFruitStore } from '../stores/fruit.store'
+import { showToast, showErrorToast } from '../helpers/toast-helper'
 
 const fruitStore = useFruitStore()
 const { data, networkMessage, totalRecords } = storeToRefs(fruitStore)
+type DisplayType = 'Filter' | 'All' | 'Favorites'
 
 const nameFilter = ref('')
 const familyFilter = ref('')
@@ -20,40 +20,38 @@ const familyFilterResult = ref('')
 
 const searchLoading = ref(false)
 const getFavoriteLoading = ref(false)
-const getAllLoading = ref(false)
+
+const displayType = ref<DisplayType>('All')
+
+const page = ref(0)
+const limit = 10
+
+const clearFilter = async () => {
+  nameFilter.value = ''
+  familyFilter.value = ''
+  search()
+}
 
 const search = async () => {
-  searchLoading.value = true
-  displayingAll.value = false
-  displayingFavorites.value = false
-  displayingFiltered.value = true
-  page.value = 0
-  loadLazyData()
+  //Store the filter and use it as the result heading
   nameFilterResult.value = nameFilter.value
   familyFilterResult.value = familyFilter.value
+
+  displayType.value = nameFilter.value == '' && familyFilter.value == '' ? 'All' : 'Filter'
+  page.value = 0
+  searchLoading.value = true
+  loadLazyData()
   searchLoading.value = false
 }
 
-const getAll = async () => {
-  nameFilter.value = ''
-  familyFilter.value = ''
-  getAllLoading.value = true
-  displayingAll.value = true
-  displayingFavorites.value = false
-  displayingFiltered.value = false
-  page.value = 0
-  loadLazyData()
-  getAllLoading.value = false
-}
-
 const geFavorites = async () => {
+  //Clear the filter
   nameFilter.value = ''
   familyFilter.value = ''
-  getFavoriteLoading.value = true
-  displayingAll.value = false
-  displayingFavorites.value = true
-  displayingFiltered.value = false
+
+  displayType.value = 'Favorites'
   page.value = 0
+  getFavoriteLoading.value = true
   loadLazyData()
   getFavoriteLoading.value = false
 }
@@ -62,70 +60,42 @@ const addFavorite = async (fruit: any) => {
   try {
     await fruitStore.addFavorite(fruit.id)
     fruit.isFavorite = true
-    toast(networkMessage.value, {
-      autoClose: 3000,
-      type: toast.TYPE.SUCCESS
-    })
+    showToast(networkMessage.value)
   } catch (error: any) {
-    toast(error.message, {
-      autoClose: 3000,
-      type: toast.TYPE.ERROR
-    })
+    showErrorToast(error.message)
   }
-  fruit.isLoading = false
 }
 
 const removeFavorite = async (fruit: any) => {
   try {
     await fruitStore.removeFavorite(fruit.id)
     fruit.isFavorite = false
-    toast(networkMessage.value, {
-      autoClose: 3000,
-      type: toast.TYPE.SUCCESS
-    })
+    showToast(networkMessage.value)
   } catch (error: any) {
-    toast(error.message, {
-      autoClose: 3000,
-      type: toast.TYPE.ERROR
-    })
+    showErrorToast(error.message)
   }
 }
 
-onMounted(() => {
-  loadLazyData()
-})
-
-const loading = ref(false)
-const page = ref(0)
-const limit = 10
-
-const displayingAll = ref(true)
-const displayingFiltered = ref(false)
-const displayingFavorites = ref(false)
-
 const loadLazyData = async () => {
-  loading.value = true
   try {
-    if (displayingAll.value) {
-      await fruitStore.getAll(page.value, limit)
-    } else if (displayingFiltered.value) {
+    if (displayType.value == 'All' || displayType.value == 'Filter') {
       await fruitStore.search(nameFilter.value, familyFilter.value, page.value, limit)
-    } else if (displayingFavorites.value) {
+    } else {
       await fruitStore.getFavorites(page.value, limit)
     }
   } catch (error: any) {
-    toast(error.message, {
-      autoClose: 3000,
-      type: toast.TYPE.ERROR
-    })
+    showErrorToast(error.message)
   }
-  loading.value = false
 }
 
 const onPage = (event: any) => {
   page.value = event.page
   loadLazyData()
 }
+
+onMounted(() => {
+  loadLazyData()
+})
 </script>
 
 <template>
@@ -145,14 +115,13 @@ const onPage = (event: any) => {
       >
         <template #header>
           <h2>Fruits Data Table</h2>
-          <h3 v-if="displayingAll">( Displaying all fruits )</h3>
-          <h3 v-if="displayingFiltered">
-            ( Displaying fruits filtered by name ={{ nameFilterResult }}, family={{
+          <h3 v-if="displayType == 'All'">( Displaying all fruits )</h3>
+          <h3 v-if="displayType == 'Filter'">
+            ( Displaying fruits filtered by name = '{{ nameFilterResult }}', family = '{{
               familyFilterResult
-            }}
-            )
+            }}' )
           </h3>
-          <h3 v-if="displayingFavorites">( Displaying favorite fruits )</h3>
+          <h3 v-if="displayType == 'Favorites'">( Displaying favorite fruits )</h3>
 
           <div class="overflow-auto">
             <div class="float-left">
@@ -171,6 +140,7 @@ const onPage = (event: any) => {
                 :loading="searchLoading"
                 @click="search"
               />
+              <Button type="button" class="m-1" label="Clear Filter" @click="clearFilter" />
             </div>
 
             <div class="float-right">
@@ -181,14 +151,6 @@ const onPage = (event: any) => {
                 icon="pi pi-search"
                 :loading="getFavoriteLoading"
                 @click="geFavorites"
-              />
-              <Button
-                type="button"
-                class="m-1"
-                label="Get All"
-                icon="pi pi-search"
-                :loading="getAllLoading"
-                @click="getAll"
               />
             </div>
           </div>
