@@ -94,6 +94,7 @@ const onPage = (event: any) => {
 }
 
 onMounted(() => {
+  displayType.value = 'All'
   loadLazyData()
 })
 </script>

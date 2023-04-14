@@ -22,7 +22,7 @@ function handleResponse(response: any) {
   return response.text().then((jsonString: string) => {
     const data = jsonString && JSON.parse(jsonString)
     if (!response.ok) {
-      const error = { message: response.statusText }
+      const error = data || { message: response.statusText }
       return Promise.reject(error)
     }
     return data
