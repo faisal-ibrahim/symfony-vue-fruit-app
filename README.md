@@ -10,6 +10,7 @@ endpoints for managing fruits, while the frontend allows users to view and inter
 Before you begin, ensure that you have the following installed:
 
 * Docker: https://docs.docker.com/engine/install/
+* Git: https://git-scm.com/downloads
 
 ## Installation
 
