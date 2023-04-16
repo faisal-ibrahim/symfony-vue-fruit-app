@@ -70,7 +70,7 @@ The frontend application will be running at the following URL: http://localhost:
 
 Before running the tests, ensure that you have completed the setup environment steps above.
 
-## Installation
+### Installation
 
 1. Setup the test Database (only first time)
    ```bash
