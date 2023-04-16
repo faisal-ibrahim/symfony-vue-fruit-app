@@ -24,7 +24,7 @@ Before you begin, ensure that you have the following installed:
 
 3. Build and run the Docker containers:
     ```bash
-			docker-compose up --build -d
+	docker-compose up --build -d
     ```
 
 4. Wait for the complete setup. You can check the status of whether all the containers are up and running via the
@@ -74,10 +74,10 @@ Before running the tests, ensure that you have completed the setup environment s
 
 1. Setup the test Database (only first time)
    ```bash
-			docker exec -it php-server /bin/bash
-			bin/console --env=test doctrine:database:create
-			bin/console --env=test doctrine:schema:create
-			bin/console --env=test doctrine:fixtures:load
+	docker exec -it php-server /bin/bash
+	bin/console --env=test doctrine:database:create
+	bin/console --env=test doctrine:schema:create
+	bin/console --env=test doctrine:fixtures:load
 	```
 2. Run the tests using PHPUnit:
    ```bash 
