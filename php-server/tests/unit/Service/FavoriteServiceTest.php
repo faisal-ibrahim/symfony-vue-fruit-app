@@ -180,7 +180,7 @@ final class FavoriteServiceTest extends TestCase
         $this->favoriteService->remove($fruitId);
     }
 
-    public function testRemoveWithValidFruitId()
+    public function testRemoveWithValidFruitId(): void
     {
         $fruitId = 123;
         $userId = 1;
@@ -201,7 +201,7 @@ final class FavoriteServiceTest extends TestCase
         $this->favoriteService->remove($fruitId);
     }
 
-    public function testRemoveWithInvalidFruitId()
+    public function testRemoveWithInvalidFruitId(): void
     {
         $fruitId = 123;
         $userId = 1;

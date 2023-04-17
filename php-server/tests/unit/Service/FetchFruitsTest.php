@@ -108,7 +108,7 @@ final class FetchFruitsTest extends TestCase
         $this->assertEquals(1, $result['upsertCount']);
     }
 
-    public function testFetchLogsErrorOnNon200Response()
+    public function testFetchLogsErrorOnNon200Response(): void
     {
         $responseMock = $this->createMock(ResponseInterface::class);
         $responseMock
