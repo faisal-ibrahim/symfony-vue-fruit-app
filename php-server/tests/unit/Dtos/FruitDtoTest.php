@@ -27,7 +27,7 @@ final class FruitDtoTest extends TestCase
         $this->assertInstanceOf(FruitDto::class, $fruitDto);
     }
 
-    public function testGetters()
+    public function testGetters(): void
     {
         $fruitDto = new FruitDto(
             'Apple',

@@ -20,19 +20,19 @@ final class FavoriteFruitTest extends TestCase
         $this->FavoriteFruit = new FavoriteFruit();
     }
 
-    public function testGetId()
+    public function testGetId(): void
     {
         $this->assertNull($this->FavoriteFruit->getId());
     }
 
-    public function testGetAndSetFruit()
+    public function testGetAndSetFruit(): void
     {
         $this->FavoriteFruit->setFruit($this->fruit);
 
         $this->assertInstanceOf(Fruit::class, $this->FavoriteFruit->getFruit());
     }
 
-    public function testGetAndSetUserId()
+    public function testGetAndSetUserId(): void
     {
         $this->FavoriteFruit->setUserId($this->userId);
 
