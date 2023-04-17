@@ -9,7 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 final class FruitControllerTest extends WebTestCase
 {
-    public function testSearchFruits()
+    public function testSearchFruits(): void
     {
         $client = static::createClient();
         $client->request('GET', '/api/fruits/');
