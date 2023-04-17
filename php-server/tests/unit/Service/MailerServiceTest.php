@@ -20,7 +20,7 @@ final class MailerServiceTest extends TestCase
         $this->mailerService = new MailerService($this->mailer);
     }
 
-    public function testSendEmail()
+    public function testSendEmail(): void
     {
         $to = 'test@example.com';
         $subject = 'Test email';
