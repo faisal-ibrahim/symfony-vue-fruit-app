@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\unit\Service;
 
 use PHPUnit\Framework\TestCase;
@@ -9,7 +11,7 @@ use App\Entity\Fruit;
 use App\Repository\FruitRepository;
 use Psr\Log\LoggerInterface;
 
-class FruitServiceTest extends TestCase
+final class FruitServiceTest extends TestCase
 {
     private FruitRepository $fruitRepository;
     private LoggerInterface $logger;
@@ -22,7 +24,7 @@ class FruitServiceTest extends TestCase
         $this->fruitService = new FruitService($this->fruitRepository, $this->logger);
     }
 
-    public function testSearchShouldReturnFruitsMatchingFilter()
+    public function testSearchShouldReturnFruitsMatchingFilter(): void
     {
         $page = 1;
         $limit = 10;
